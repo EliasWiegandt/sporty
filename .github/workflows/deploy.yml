@@ -1,0 +1,50 @@
+name: Deploy Cloudflare Worker (Sporty)
+
+on:
+  pull_request:
+    branches: ["main"] # Staging: every PR targeting main
+  push:
+    branches: ["main"] # Production: when main changes
+  workflow_dispatch: # Manual run button
+
+jobs:
+  staging:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install Wrangler
+        run: npm i -g wrangler
+
+      - name: Deploy to STAGING (workers.dev)
+        run: wrangler deploy --env staging
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+  production:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: production # optional: add required reviewers in GH → Environments
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install Wrangler
+        run: npm i -g wrangler
+
+      - name: Deploy to PRODUCTION (sporty.plyml.com)
+        run: wrangler deploy --env production
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

@@ -56,6 +56,10 @@ Full vision: `docs/product/VISION.md`.
 
 Use VS Code task "Dev: Both (Worker + Backend)" to run both.
 
+## Health Checks
+- Worker: `GET /api/healthz` returns `{ "ok": true }` quickly and does not touch the backend.
+- Backend: avoid periodic pings on Render free tier (it sleeps by design). Use on-demand checks only when needed.
+
 ## Deploy
 - Backend: Render.com (see `../sporty-backend/render.yaml`). Set `API_KEY`.
 - Frontend: Cloudflare Worker. Set secrets `BACKEND_URL`, `BACKEND_API_KEY` per environment.

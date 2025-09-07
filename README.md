@@ -56,6 +56,11 @@ wrangler dev
 
 Open the printed local URL. Submitting the form will POST to `/api/submit`, which the Worker should proxy to `${BACKEND_URL}/recommend` with the `X-API-Key` header.
 
+### Health
+
+- Quick check (Worker only): `GET /api/healthz` → `{ "ok": true }`
+- Example: `curl -sS http://127.0.0.1:8787/api/healthz`
+
 ## Worker Proxy
 
 The Worker intercepts `POST /api/submit` and forwards to the backend `POST /recommend`, injecting `X-API-Key` from secrets. This is implemented in `src/worker.js`.

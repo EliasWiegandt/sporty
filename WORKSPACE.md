@@ -20,4 +20,4 @@ This VS Code workspace contains two sibling repos:
 - 401 Unauthorized: Ensure Worker `BACKEND_API_KEY` equals backend `API_KEY`.
 - Network errors: Verify backend at `http://127.0.0.1:8000` and worker at `http://127.0.0.1:8787`.
 - CORS: Requests should go via the Worker; avoid direct browser calls to backend.
-
+ - Health: Check Worker at `GET http://127.0.0.1:8787/api/healthz`. Avoid scheduled pings to the backend on Render free tier.

@@ -7,7 +7,7 @@ Phase 0 — Running Skeleton (now)
 Phase 1 — Solid MVP
 - Implement Worker proxy for `POST /api/submit` → backend `/recommend` with `X-API-Key`.
 - Add basic input validation and UX polish on `site/index.html`.
-- Add `/healthz` endpoints (Worker passthrough + backend) for monitoring.
+ - Add Worker `GET /api/healthz` for quick checks (done). Backend `/healthz` optional; avoid scheduled pings on Render free tier.
 - Document API contract and example payloads.
 
 Phase 2 — Data Foundations

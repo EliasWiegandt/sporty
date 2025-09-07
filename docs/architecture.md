@@ -6,6 +6,7 @@ Flow: Browser → Cloudflare Worker → FastAPI backend.
 2) The browser posts JSON to `POST /api/submit` on the Worker.
 3) The Worker forwards to `${BACKEND_URL}/recommend` and injects `X-API-Key: ${BACKEND_API_KEY}`.
 4) The Worker returns the backend JSON response to the browser.
+5) Health: the Worker exposes `GET /api/healthz` returning `{ ok: true }` without calling the backend.
 
 Entities
 - Worker env secrets: `BACKEND_URL`, `BACKEND_API_KEY`.
@@ -22,4 +23,3 @@ Contracts
   - `suggested_sport: string`
   - `reason: string`
   - `ranking: number`
-

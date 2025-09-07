@@ -2,17 +2,42 @@ name: Deploy Cloudflare Worker (Sporty)
 
 on:
   pull_request:
-    branches: ["main"] # Staging previews on PRs
+    branches: ["main"] # staging on PRs
   push:
-    branches: ["main"] # Production on main
+    branches: ["main"] # production on main
+  workflow_dispatch: # manual run from the UI
+    inputs:
+      target:
+        description: "Where to deploy?"
+        required: true
+        type: choice
+        options: ["staging", "production"]
+        default: "staging"
+      ref:
+        description: "Git ref (branch/tag/SHA). Leave empty for default."
+        required: false
+        type: string
 
 jobs:
+  manual:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || '' }}
+
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env ${{ inputs.target }}
+
   staging:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -25,7 +50,6 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v4
-
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}

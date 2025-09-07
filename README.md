@@ -10,7 +10,10 @@ Static frontend served by a Cloudflare Worker that also proxies API calls to the
 
 ## Repo Layout
 
-- `site/`: Static HTML/CSS/JS (entry: `site/index.html`).
+- `site/`: Static HTML/CSS/JS pages
+  - `site/index.html`: Landing page
+  - `site/intake.html`: Fill-in-your-data form
+  - `site/result.html`: Displays returned results (reads from sessionStorage)
 - `src/worker.js`: Cloudflare Worker entry (see `wrangler.toml`).
 - `wrangler.toml`: Worker config, assets binding, and routes.
 

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sporty — Intake</title>
+  <style>
+    :root { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    body { max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+    nav { margin-bottom: 1rem; }
+    form { display: grid; gap: 1rem; }
+    label { display: grid; gap: .5rem; }
+    input, select, textarea, button {
+      font: inherit; padding: .6rem .7rem; border: 1px solid #ccc; border-radius: .5rem;
+    }
+    button { cursor: pointer; }
+    .row { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
+    .help { color: #666; font-size: .9rem; }
+    .error { color: #b00020; }
+    .success { color: #0969da; }
+  </style>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="data:," />
+  <link rel="canonical" href="/intake.html" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="color-scheme" content="light" />
+  <meta name="description" content="Provide basic info to get a playful sport suggestion." />
+</head>
+<body>
+  <nav>
+    <a href="/">← Home</a>
+    &nbsp;·&nbsp;
+    <a href="/result.html">Results</a>
+  </nav>
+  <h1>Quick Intake</h1>
+  <p class="help">Fill in a few fields to get a first (dummy) suggestion.</p>
+
+  <form id="sporty-form" novalidate>
+    <label>
+      Birthday
+      <input type="date" name="birthday" required />
+      <span class="help">Format: YYYY-MM-DD</span>
+    </label>
+
+    <label>
+      Sex
+      <select name="sex">
+        <option value="male">male</option>
+        <option value="female">female</option>
+        <option value="other" selected>other</option>
+      </select>
+    </label>
+
+    <div class="row">
+      <label>
+        Height (cm)
+        <input type="number" name="height_cm" inputmode="numeric" min="50" max="250" required />
+      </label>
+
+      <label>
+        Weight (kg)
+        <input type="number" name="weight_kg" inputmode="decimal" step="0.1" min="20" max="300" required />
+      </label>
+    </div>
+
+    <label>
+      Preferences (optional)
+      <textarea name="preferences" rows="3" placeholder="Any sports you like/dislike, injuries, goals…"></textarea>
+    </label>
+
+    <button type="submit" id="submit-btn">Submit</button>
+    <div id="status" role="status" aria-live="polite"></div>
+  </form>
+
+  <script>
+    const form   = document.getElementById('sporty-form');
+    const status = document.getElementById('status');
+    const btn    = document.getElementById('submit-btn');
+
+    function toISODate(value) {
+      return value || null;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = '';
+
+      const fd = new FormData(form);
+      const birthday = toISODate(fd.get('birthday'));
+      const sex = fd.get('sex') || 'other';
+      const height = Number(fd.get('height_cm'));
+      const weight = Number(fd.get('weight_kg'));
+      const preferences = (fd.get('preferences') || '').trim();
+
+      if (!birthday || !height || !weight) {
+        status.innerHTML = '<span class="error">Please fill required fields.</span>';
+        return;
+      }
+
+      const payload = { birthday, sex, height_cm: height, weight_kg: weight, preferences };
+
+      btn.disabled = true;
+      btn.textContent = 'Submitting…';
+
+      try {
+        const res = await fetch('/api/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const text = await res.text();
+
+        if (!res.ok) {
+          let data; try { data = JSON.parse(text); } catch { data = { detail: text } }
+          status.innerHTML = `<span class="error">Error ${res.status}: ${data.detail || 'Request failed'}</span>`;
+          return;
+        }
+
+        // Store raw response (JSON text) and redirect to results page
+        sessionStorage.setItem('sporty:lastResult', text);
+        window.location.href = '/result.html';
+      } catch (err) {
+        status.innerHTML = `<span class="error">Network error: ${err?.message || err}</span>`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Submit';
+      }
+    });
+  </script>
+</body>
+</html>

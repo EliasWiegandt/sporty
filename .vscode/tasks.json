@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Backend: Uvicorn",
+      "type": "shell",
+      "command": "uvicorn app.main:app --reload",
+      "options": { "cwd": "../sporty-backend" },
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Worker: Wrangler Dev",
+      "type": "shell",
+      "command": "wrangler dev",
+      "options": { "cwd": "." },
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Dev: Both (Worker + Backend)",
+      "dependsOn": [
+        "Backend: Uvicorn",
+        "Worker: Wrangler Dev"
+      ],
+      "dependsOrder": "parallel"
+    }
+  ]
+}
+

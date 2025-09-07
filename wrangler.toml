@@ -12,9 +12,9 @@ workers_dev = true  # enables local + a workers.dev preview when not using a spe
 # --- Staging (preview env) ---
 [env.staging]
 workers_dev = true   # get a workers.dev URL on deploy (no custom domain)
-# You can add staging-specific vars/bindings here later, e.g.:
-# [env.staging.vars]
-# API_BASE = "https://staging-api.example.com"
+# Non-secret vars for staging
+[env.staging.vars]
+BACKEND_URL = "https://sporty-backend-yu3b.onrender.com"
 
 # --- Production ---
 [env.production]
@@ -22,5 +22,5 @@ workers_dev = true   # get a workers.dev URL on deploy (no custom domain)
 routes = [
   { pattern = "sporty.plyml.com/*", zone_name = "plyml.com" }
 ]
-# [env.production.vars]
-# API_BASE = "https://api.plyml.com"
+[env.production.vars]
+BACKEND_URL = "https://sporty-backend-yu3b.onrender.com"

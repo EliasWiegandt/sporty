@@ -26,13 +26,13 @@ Configure these as Cloudflare Worker secrets (they are not committed):
 
 - `BACKEND_URL`: Base URL of the backend API, e.g. `http://127.0.0.1:8000` (local) or your Render URL.
 - `BACKEND_API_KEY`: The value expected by the backend in `X-API-Key`.
-  - Note: For compatibility with your current Cloudflare setup, `API_KEY` is also accepted. Set either one.
+  - Frontend uses the name `BACKEND_API_KEY` only.
 
 Set locally for dev:
 
 ```
 wrangler secret put BACKEND_URL
-wrangler secret put BACKEND_API_KEY   # or: wrangler secret put API_KEY
+wrangler secret put BACKEND_API_KEY
 ```
 
 Ensure the backend uses the same API key value (see backend README).
@@ -72,7 +72,7 @@ wrangler secret put BACKEND_URL --env production
 wrangler secret put BACKEND_API_KEY --env production
 ```
 
-For convenience, `BACKEND_URL` for both `staging` and `production` is configured in `wrangler.toml` under `[env.<name>.vars]`. You can also set it as a secret if you prefer to keep all configuration out of git.
+For consistency and privacy-by-default, configure `BACKEND_URL` as a secret per environment instead of committing it in `wrangler.toml`.
 
 ## API Contract
 
@@ -121,6 +121,8 @@ Local-only secrets for fast iteration:
 Per-environment values:
 
 - Use `--env` to scope secrets to staging/production:
+  - `wrangler secret put BACKEND_URL --env staging`
+  - `wrangler secret put BACKEND_URL --env production`
   - `wrangler secret put BACKEND_API_KEY --env staging`
   - `wrangler secret put BACKEND_API_KEY --env production`
-- Non-secrets (like `BACKEND_URL`) can live in `wrangler.toml` under `[env.staging.vars]` / `[env.production.vars]`, or you can also store them as secrets if you prefer keeping all config out of git.
+  

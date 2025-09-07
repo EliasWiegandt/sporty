@@ -2,6 +2,4 @@
 # Copy to `.dev.vars` (do not commit `.dev.vars`)
 
 BACKEND_URL="http://127.0.0.1:8000"
-# Either of the following names is accepted by the worker
 BACKEND_API_KEY="dev-key-123"
-# API_KEY="dev-key-123"

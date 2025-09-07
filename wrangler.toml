@@ -12,9 +12,7 @@ workers_dev = true  # enables local + a workers.dev preview when not using a spe
 # --- Staging (preview env) ---
 [env.staging]
 workers_dev = true   # get a workers.dev URL on deploy (no custom domain)
-# Non-secret vars for staging
-[env.staging.vars]
-BACKEND_URL = "https://sporty-backend-yu3b.onrender.com"
+# Secrets (e.g., BACKEND_URL, BACKEND_API_KEY) should be set via `wrangler secret`
 
 # --- Production ---
 [env.production]
@@ -22,5 +20,4 @@ BACKEND_URL = "https://sporty-backend-yu3b.onrender.com"
 routes = [
   { pattern = "sporty.plyml.com/*", zone_name = "plyml.com" }
 ]
-[env.production.vars]
-BACKEND_URL = "https://sporty-backend-yu3b.onrender.com"
+# Secrets (e.g., BACKEND_URL, BACKEND_API_KEY) should be set via `wrangler secret`

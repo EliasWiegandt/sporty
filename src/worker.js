@@ -2,6 +2,7 @@
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const reqId = request.headers.get("X-Request-Id") || crypto.randomUUID();
 
     // Proxy: POST /api/submit -> BACKEND_URL/recommend with X-API-Key
     if (request.method === "POST" && url.pathname === "/api/submit") {
@@ -20,29 +21,38 @@ export default {
       }
 
       const upstream = new URL("/recommend", backendUrl);
-      const resp = await fetch(upstream.toString(), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-Key": apiKey,
-        },
-        body,
-      });
+      try {
+        const resp = await fetch(upstream.toString(), {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-API-Key": apiKey,
+            "X-Request-Id": reqId,
+          },
+          body,
+          signal: AbortSignal.timeout(10000), // 10s timeout for cold starts
+        });
 
-      const text = await resp.text();
-      return new Response(text, {
-        status: resp.status,
-        headers: {
-          "Content-Type":
-            resp.headers.get("Content-Type") || "application/json",
-        },
-      });
+        const text = await resp.text();
+        return new Response(text, {
+          status: resp.status,
+          headers: {
+            "Content-Type": resp.headers.get("Content-Type") || "application/json",
+            "X-Request-Id": reqId,
+          },
+        });
+      } catch (err) {
+        return new Response(
+          JSON.stringify({ detail: "Upstream unavailable. Please try again in a moment.", request_id: reqId }),
+          { status: 502, headers: { "Content-Type": "application/json", "X-Request-Id": reqId } }
+        );
+      }
     }
 
     // Health check
     if (request.method === "GET" && url.pathname === "/api/healthz") {
-      return new Response(JSON.stringify({ ok: true }), {
-        headers: { "Content-Type": "application/json" },
+      return new Response(JSON.stringify({ ok: true, request_id: reqId }), {
+        headers: { "Content-Type": "application/json", "X-Request-Id": reqId },
       });
     }
 

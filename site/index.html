@@ -3,42 +3,145 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sporty — Welcome</title>
+  <title>Sporty — Find the right sport</title>
+  <meta name="description" content="Find the right sport for your child’s future body. Personalized recommendations grounded in growth patterns and play preferences." />
+  <link rel="icon" href="data:," />
   <style>
     :root { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-    body { max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
-    button, a.button { font: inherit; padding: .7rem 1rem; border-radius: .5rem; border: 1px solid #ccc; text-decoration: none; display: inline-block; }
-    .help { color: #666; font-size: .95rem; }
-    ol { padding-left: 1.2rem; }
+    body { margin: 0; color: #111; }
+    header, main, footer { max-width: 960px; margin: 0 auto; padding: 1rem; }
+    nav a { color: inherit; text-decoration: none; }
+    nav a:hover, a.button:hover { text-decoration: underline; }
+    .button { font: inherit; padding: .75rem 1rem; border-radius: .5rem; border: 1px solid #0ea5a5; background: #14b8a6; color: white; display: inline-block; }
+    .ghost { background: transparent; border-color: #94a3b8; color: #0f172a; }
+    .muted { color: #475569; }
+    .hero { display: grid; gap: 1.25rem; align-items: center; grid-template-columns: 1.2fr 1fr; padding: 2rem 1rem; }
+    .hero img { width: 100%; height: auto; border-radius: .5rem; }
+    .hero h1 { font-size: clamp(1.8rem, 3vw + 1rem, 2.6rem); margin: 0 0 .5rem; }
+    .hero p { margin: 0 0 1rem; font-size: 1.1rem; }
+    .steps { padding: 2rem 1rem; }
+    .steps h2 { margin: 0 0 1rem; }
+    .grid-3 { display: grid; gap: 1rem; grid-template-columns: repeat(3, 1fr); }
+    .card { border: 1px solid #e5e7eb; border-radius: .75rem; padding: 1rem; background: #fff; }
+    .card img { width: 100%; height: auto; border-radius: .5rem; }
+    .samples { padding: 2rem 1rem; }
+    .samples .cards { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); }
+    .faq { padding: 2rem 1rem; }
+    .faq details { border: 1px solid #e5e7eb; border-radius: .5rem; padding: .75rem 1rem; background: #fff; }
+    .why { padding: 2rem 1rem; }
+    footer { padding: 2rem 1rem; }
+    .footer-strip { width: 100%; height: auto; border-radius: .5rem; }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .samples .cards { grid-template-columns: 1fr; }
+    }
   </style>
-  <meta name="description" content="Playful, data-informed sport suggestions." />
-  <link rel="icon" href="data:," />
 </head>
 <body>
   <header>
-    <h1>Sporty</h1>
+    <nav style="margin-bottom:1rem">
+      <a href="/">Home</a>
+      &nbsp;·&nbsp;
+      <a href="/intake.html">Intake</a>
+      &nbsp;·&nbsp;
+      <a href="/result.html">Results</a>
+    </nav>
+    <section class="hero" aria-label="Hero">
+      <div>
+        <h1>Find the right sport for your child’s future body.</h1>
+        <p class="muted">Personalized recommendations grounded in growth patterns and play preferences.</p>
+        <p>
+          <a class="button" aria-label="Try Sporty" href="/intake.html">Try Sporty →</a>
+          &nbsp;
+          <a class="button ghost" aria-label="How it works" href="#how-it-works">How it works</a>
+        </p>
+      </div>
+      <div>
+        <img src="/images/hero_kids_playing.jpeg" alt="Illustration of diverse children happily playing different sports" loading="eager" />
+      </div>
+    </section>
   </header>
-  <nav style="margin-bottom:1rem">
-    <a href="/">Home</a>
-    &nbsp;·&nbsp;
-    <a href="/intake.html">Intake</a>
-    &nbsp;·&nbsp;
-    <a href="/result.html">Results</a>
-  </nav>
 
-  <p class="help">Playful, data‑informed sport suggestions based on simple inputs. This is for learning and exploration, not medical advice.</p>
+  <main>
+    <section id="how-it-works" class="steps" aria-label="How it works">
+      <h2>Three simple steps to your child’s sport matches.</h2>
+      <div class="grid-3">
+        <div class="card">
+          <img src="/images/howitworks_step1.jpeg" alt="Icon of a form for entering child details" loading="lazy" />
+          <h3>Tell us about your child</h3>
+          <p class="muted">Age, height, weight and play preferences.</p>
+        </div>
+        <div class="card">
+          <img src="/images/howitworks_step2.jpeg" alt="Icon representing prediction of growth and strengths" loading="lazy" />
+          <h3>We predict growth & strengths</h3>
+          <p class="muted">Our model estimates fit across key movement patterns.</p>
+        </div>
+        <div class="card">
+          <img src="/images/howitworks_step3.jpeg" alt="Icon representing personalized sport matches" loading="lazy" />
+          <h3>Get personalized sport matches</h3>
+          <p class="muted">See sports that fit now—and as your child grows.</p>
+        </div>
+      </div>
+      <p class="muted" style="margin-top: .75rem">No account needed · Takes under 1 minute</p>
+    </section>
 
-  <p><a href="/intake.html" class="button">Get Started</a></p>
+    <section class="samples" aria-label="Sample results">
+      <h2>See an example result</h2>
+      <div class="cards">
+        <div class="card">
+          <img src="/images/sample_card_anna.jpeg" alt="Young girl trying gymnastics" loading="lazy" />
+          <h3>For Anna (7)</h3>
+          <p class="muted">Gymnastics · Swimming · Climbing</p>
+          <ul>
+            <li>Great strength-to-weight ratio for her age</li>
+            <li>Low joint load, full-body coordination</li>
+            <li>Enjoys focused, skill-based play</li>
+          </ul>
+        </div>
+        <div class="card">
+          <img src="/images/sample_card_leo.jpeg" alt="Young boy playing basketball outside" loading="lazy" />
+          <h3>For Leo (9)</h3>
+          <p class="muted">Basketball · Rowing · Judo</p>
+          <ul>
+            <li>Developing reach and leg power</li>
+            <li>Team dynamics suit his energy</li>
+            <li>Good skill progression curve</li>
+          </ul>
+        </div>
+      </div>
+      <p style="margin-top:1rem"><a class="button" href="/intake.html">Try Sporty →</a></p>
+    </section>
 
-  <h2>How it works</h2>
-  <ol>
-    <li>Fill in basic info (birthday, height/weight, preferences).</li>
-    <li>We send it to our backend via a secure Worker proxy.</li>
-    <li>See a suggestion with a short reason.</li>
-  </ol>
+    <section class="why" aria-label="Why Sporty">
+      <h2>Why Sporty?</h2>
+      <p>Every child is unique. Sporty helps match your child with activities where they can thrive—balancing physical fit, skill development, and fun.</p>
+      <img src="/images/trust_badges.jpeg" alt="Three badges: care, science-informed, ages 4–12" loading="lazy" style="max-width:480px; width:100%; height:auto" />
+      <p class="muted" style="font-size:.9rem">General guidance only; not medical advice.</p>
+    </section>
 
-  <footer class="help">
-    Secrets are injected on the server; your browser never sees the API key.
+    <section class="faq" aria-label="FAQ">
+      <h2>FAQ</h2>
+      <details>
+        <summary>What information do I need?</summary>
+        <p>Age, height, weight and play preferences. No signup required.</p>
+      </details>
+      <br />
+      <details>
+        <summary>Is this a medical assessment?</summary>
+        <p>No. It’s general guidance to help you explore options.</p>
+      </details>
+      <br />
+      <details>
+        <summary>Which sports do you cover?</summary>
+        <p>From swimming and gymnastics to team and racket sports.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    <img class="footer-strip" src="/images/footer_family.jpeg" alt="Family preparing for exercise together" loading="lazy" />
+    <p style="margin-top:1rem" class="muted">Ready to discover your child’s best fit? <a href="/intake.html">Start now →</a></p>
   </footer>
 </body>
 </html>

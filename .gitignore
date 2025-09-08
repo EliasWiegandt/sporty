@@ -1,3 +1,14 @@
+# Local virtualenvs
 .venv/
+
+# Env files (never commit secrets)
 .env
 .dev.vars
+
+# OS/editor
+.DS_Store
+.vscode/
+
+# Node/Worker tooling
+node_modules/
+.wrangler/

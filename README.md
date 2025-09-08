@@ -16,6 +16,8 @@ Static frontend served by a Cloudflare Worker that also proxies API calls to the
   - `site/result.html`: Displays returned results (reads from sessionStorage)
 - `src/worker.js`: Cloudflare Worker entry (see `wrangler.toml`).
 - `wrangler.toml`: Worker config, assets binding, and routes.
+ - `scripts/snap_frontend.sh`: Headless Chrome snapshots helper
+ - `Makefile`: convenience targets (e.g., `make snap`)
 
 ## Prerequisites
 
@@ -63,6 +65,18 @@ Open the printed local URL. Submitting the form will POST to `/api/submit`, whic
 
 - Quick check (Worker only): `GET /api/healthz` → `{ "ok": true }`
 - Example: `curl -sS http://127.0.0.1:8787/api/healthz`
+
+### Snapshots (optional)
+
+If you want to generate a static screenshot of the current frontend (homepage only, desktop):
+
+```
+make snap             # defaults to http://127.0.0.1:8787
+# or override Chrome binary if needed:
+CHROME_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" make snap
+```
+
+Screenshot lands in `screenshots/desktop_home.png`. Ensure the dev server is running first.
 
 ## Worker Proxy
 

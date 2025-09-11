@@ -2,6 +2,17 @@
 
 Static frontend served by a Cloudflare Worker that also proxies API calls to the backend and injects the API key. The worker serves the static site from `site/` and forwards `/api/submit` to the backend's `/recommend` endpoint.
 
+## Current Scope
+
+- Adult-only MVP: intake and suggestions are for adults. The child + parents growth projection feature is deferred to a later phase.
+- No persistence yet: results are ephemeral in the browser (e.g., `sessionStorage`).
+- Backend is actively experimenting with synthetic/test data that describe optimal body profiles for various sports to bootstrap scoring and examples.
+
+## What’s Next
+
+- Add Supabase (auth + Postgres) to handle sign-up/login and store both submitted intake data and generated suggestions.
+- Add explicit consent UX: users must consent before we retain their data. Parent/guardian consent for children will be handled when we add the child feature.
+
 ## Architecture
 
 - Client → `Cloudflare Worker` → Backend API
@@ -82,6 +93,10 @@ Screenshot lands in `screenshots/desktop_home.png`. Ensure the dev server is run
 
 The Worker intercepts `POST /api/submit` and forwards to the backend `POST /recommend`, injecting `X-API-Key` from secrets. This is implemented in `src/worker.js`.
 
+Notes:
+- The browser never calls the backend directly.
+- For now, requests represent adult users only. Child + parent inputs are not collected yet.
+
 ## Deploy
 
 - Staging preview: `wrangler deploy --env staging`
@@ -112,6 +127,8 @@ For consistency and privacy-by-default, configure `BACKEND_URL` as a secret per 
 }
 ```
 
+Optional biometric fields the backend may accept (subject to change): `tags`, `arm_span_cm`, `leg_inseam_cm`, `shoulder_width_cm`, `hip_width_cm`, `hand_length_cm`, `foot_length_cm`.
+
 - Response example (dummy for now):
 
 ```json
@@ -126,6 +143,7 @@ For consistency and privacy-by-default, configure `BACKEND_URL` as a secret per 
 
 - Keep API keys in Worker/Render secrets; never expose them to the client.
 - If CORS issues arise, ensure requests go through the Worker; the browser never talks to the backend directly.
+- Child + parents forecasting is not implemented yet; docs and UI reflect an adult-only MVP.
 
 ## Project Docs (Memory)
 - Vision: `docs/product/VISION.md`

@@ -8,6 +8,9 @@ Flow: Browser → Cloudflare Worker → FastAPI backend.
 4) The Worker returns the backend JSON response to the browser.
 5) Health: the Worker exposes `GET /api/healthz` returning `{ ok: true }` without calling the backend.
 
+Scope
+- Adult-only for the MVP. Child + parents projection is not implemented yet.
+
 Entities
 - Worker env secrets: `BACKEND_URL`, `BACKEND_API_KEY`.
 - Backend env var: `API_KEY` (must equal `BACKEND_API_KEY`).
@@ -23,3 +26,6 @@ Contracts
   - `suggested_sport: string`
   - `reason: string`
   - `ranking: number`
+
+Persistence
+- Not implemented yet. Next step is integrating Supabase (auth + Postgres) to store intake submissions and generated results behind explicit user consent.

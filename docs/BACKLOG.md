@@ -1,16 +1,17 @@
 # Backlog (short-horizon)
 
 Now
-- Implement Worker proxy for `/api/submit` with `BACKEND_URL` + `BACKEND_API_KEY`.
-- Add `/healthz` on backend and route on Worker.
+- Verify Worker proxy for `/api/submit` with `BACKEND_URL` + `BACKEND_API_KEY`.
+- Worker `GET /api/healthz` quick check (no backend call).
 - Improve frontend form UX (required fields, better errors, loading state).
+- Adult-only copy and validation; add simple result page.
 
 Next
-- Sports taxonomy v0 (list + attributes) and data model draft.
-- Decide on Supabase setup; create dev project and schemas.
-- Add result page that renders ranked suggestions nicely.
+- Supabase setup (auth + Postgres), dev project and initial schemas.
+- Consent UX for data retention; persist only after consent.
+- Sports taxonomy v0 (list + attributes) and mapping to fields.
 
 Later
-- Supabase auth stub (login/signup UI, no persistence yet).
-- Scoring function v1; plug into backend.
+- Scoring function v1; plug into backend (use synthetic/test data to calibrate).
+- Child + parents flow design (defer implementation).
 - Add simple analytics (page views + submission counts).

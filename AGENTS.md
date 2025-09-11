@@ -7,6 +7,11 @@ Purpose: help agents collaborate across `sporty-frontend` (Cloudflare Worker + s
 - Proxy `POST /api/submit` from the Worker to the backend `POST /recommend`.
 - Keep the API key secret by injecting `X-API-Key` in the Worker.
 
+## Status (Now)
+- Adult-only MVP: only adult intake and suggestions are in scope. Child + parents growth projection is deferred.
+- Backend is experimenting with synthetic/test data for optimal body profiles per sport to seed examples and shape scoring.
+- No persistence yet; next step is adding Supabase for auth + data storage.
+
 ## Guiding Principles
 - User-first: simple flows, fast feedback, clear errors.
 - Privacy-by-default: secrets live in platform env, never in code.
@@ -17,7 +22,7 @@ Purpose: help agents collaborate across `sporty-frontend` (Cloudflare Worker + s
 ## Product Vision (summary)
 - Suggest sports that fit a person’s body and personality.
 - Fun, educational tool; not medical advice.
-- Killer feature: child + parents inputs → projected body model → early sport suggestions.
+- Killer feature (later): child + parents inputs → projected body model → early sport suggestions.
 - Future: auth (Supabase), payments (Stripe), datasets of sports/body comps, research references.
 
 Full vision: `docs/product/VISION.md`.
@@ -46,6 +51,8 @@ Full vision: `docs/product/VISION.md`.
 - Backend env:
   - `API_KEY`: Must match `BACKEND_API_KEY`.
 
+Upcoming (not yet used): Supabase Project credentials for auth + Postgres. Add only when integrating auth/storage.
+
 ## Local Dev Commands
 - Start backend:
   - `cd ../sporty-backend`
@@ -59,6 +66,11 @@ Use VS Code task "Dev: Both (Worker + Backend)" to run both.
 ## Health Checks
 - Worker: `GET /api/healthz` returns `{ "ok": true }` quickly and does not touch the backend.
 - Backend: avoid periodic pings on Render free tier (it sleeps by design). Use on-demand checks only when needed.
+
+## Next Steps
+- Add Supabase auth (email/OAuth) and Postgres for storing user-submitted intake and generated results.
+- Add explicit consent UI for data retention; later add parent/guardian consent for children when enabling the child feature.
+- Define initial schemas for adult-only profiles and results; keep child-specific fields out until that phase.
 
 ## Deploy
 - Backend: Render.com (see `../sporty-backend/render.yaml`). Set `API_KEY`.

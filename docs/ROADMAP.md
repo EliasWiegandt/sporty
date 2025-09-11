@@ -2,33 +2,30 @@
 
 Phase 0 — Running Skeleton (now)
 - Frontend served by Cloudflare Worker; backend on Render.
-- Single POST `/recommend` returns dummy suggestion.
+- Adult-only flow: single POST `/recommend` returns a dummy suggestion.
+- Worker `GET /api/healthz` is available for quick checks (does not call backend).
 
-Phase 1 — Solid MVP
-- Implement Worker proxy for `POST /api/submit` → backend `/recommend` with `X-API-Key`.
+Phase 1 — Solid MVP (adult-only)
+- Implement/verify Worker proxy for `POST /api/submit` → backend `/recommend` with `X-API-Key`.
 - Add basic input validation and UX polish on `site/index.html`.
- - Add Worker `GET /api/healthz` for quick checks (done). Backend `/healthz` optional; avoid scheduled pings on Render free tier.
+- Add `site/result.html` and friendly error handling.
 - Document API contract and example payloads.
 
-Phase 2 — Data Foundations
-- Define sports taxonomy and positions/subcategories.
-- Choose data store (Supabase Postgres) and schema draft.
-- Seed a tiny dataset (a few sports, sample athlete profiles).
+Phase 2 — Supabase (Next)
+- Add Supabase Auth (email/OAuth) and Postgres.
+- Add explicit consent UX and privacy copy; persist adult intake + results only after consent.
+- Define initial schemas (adult profiles, submissions, results). Exclude child-related fields for now.
 
-Phase 3 — Accounts (Prep Only)
-- Add Supabase to the frontend for basic auth gating (stub UI).
-- Design backend profile endpoints (save intake + results) without persisting until data model is ready.
+Phase 3 — Data Foundations & Scoring
+- Define sports taxonomy and attributes.
+- Continue backend generation of synthetic/test data for “optimal body by sport”; use to seed examples.
+- Implement simple scoring combining measurements + preferences; return ranked list with reasons.
 
-Phase 4 — First Real Suggestions
-- Implement simple scoring combining measurements + preferences.
-- Return ranked list with reasons; add result page.
-- Log anonymized scoring telemetry for tuning (opt-in).
-
-Phase 5 — Child + Parents (Prototype)
+Phase 4 — Child + Parents (Prototype, later)
 - Lightweight projection model: height/weight curves + parental influence (transparent assumptions).
-- Dedicated intake view; produce playful suggestions.
+- Dedicated intake view with parent/guardian consent and appropriate safeguards.
 
-Phase 6 — Payment & Hardening (Prep)
+Phase 5 — Payment & Hardening (Prep)
 - Stripe checkout stubs: pay-per-analysis; feature flags to gate pages.
 - Add rate limiting, logging, and error boundaries.
 - Production deploy playbook and monitoring.

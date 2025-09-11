@@ -3,6 +3,7 @@ frontend:
     name: sporty
     assets_dir: site
     main: src/worker.js
+    scope: adult_only
     staging:
       workers_dev: true
     production:
@@ -17,8 +18,14 @@ backend:
   start: uvicorn app.main:app --host 0.0.0.0 --port $PORT
   env:
     - API_KEY        # must match BACKEND_API_KEY
+  test_data:
+    synthetic_optimal_bodies: in_progress
 api:
   worker_endpoint: POST /api/submit
   worker_health: GET /api/healthz
   backend_endpoint: POST /recommend
   contract: docs/architecture.md
+next:
+  supabase:
+    auth_and_storage: planned
+    consent_required_before_persist: true

@@ -117,6 +117,17 @@
       </fieldset>
     </section>
 
+    <section class="section">
+      <h2>Consent</h2>
+      <label style="display:flex; align-items:flex-start; gap:.6rem;">
+        <input type="checkbox" id="consent" name="consent" />
+        <span>
+          I consent to Sporty processing the information I submit to generate a sport suggestion. I understand that the current MVP does not store my data persistently; when account/storage features are added, I will be asked to consent again before anything is saved.
+        </span>
+      </label>
+      <p class="help">Tick the box to continue. For child data, additional parent/guardian consent will be required when that feature launches.</p>
+    </section>
+
     <button class="button" type="submit" id="submit-btn">Submit</button>
     <div id="status" role="status" aria-live="polite"></div>
   </form>
@@ -133,6 +144,7 @@
       status.textContent = '';
 
       const fd = new FormData(form);
+      const consentGiven = fd.get('consent') === 'on';
       const birthday = toISODate(fd.get('birthday'));
       const sex = fd.get('sex') || 'other';
       const height = Number(fd.get('height_cm'));
@@ -140,8 +152,13 @@
       const preferences = (fd.get('preferences') || '').trim();
       const tags = fd.getAll('tags');
 
+      if (!consentGiven) {
+        status.innerHTML = '<span class="error">Please tick the consent box to continue.</span>';
+        return;
+      }
+
       if (!birthday || !height || !weight) {
-        status.innerHTML = '<span class="error">Please fill required fields.</span>';
+        status.innerHTML = '<span class="error">Please fill all required fields.</span>';
         return;
       }
 

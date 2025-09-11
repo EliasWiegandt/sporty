@@ -8,3 +8,6 @@ snap:
 
 clean-snap:
 	rm -rf screenshots
+
+run-frontend:
+	wrangler dev

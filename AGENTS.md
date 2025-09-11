@@ -12,6 +12,13 @@ Purpose: help agents collaborate across `sporty-frontend` (Cloudflare Worker + s
 - Backend is experimenting with synthetic/test data for optimal body profiles per sport to seed examples and shape scoring.
 - No persistence yet; next step is adding Supabase for auth + data storage.
 
+## Supabase Plan (Next)
+- Frontend uses `SUPABASE_URL` + `SUPABASE_PUBLISHABLE_KEY` (public) for auth.
+- Backend uses `SUPABASE_SECRET_KEY` (server-only) for DB writes; never expose to clients.
+- Implement RLS with owner-only access and guardian-based access for child data.
+- Import `optimal_bodies` dataset to support scoring and examples.
+- Schema and RLS details: `docs/supabase/SCHEMA.md`.
+
 ## Guiding Principles
 - User-first: simple flows, fast feedback, clear errors.
 - Privacy-by-default: secrets live in platform env, never in code.

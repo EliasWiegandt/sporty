@@ -15,15 +15,18 @@ Phase 2 — Supabase (Next)
 - Add Supabase Auth (email/OAuth) and Postgres.
 - Add explicit consent UX and privacy copy; persist adult intake + results only after consent.
 - Define initial schemas (adult profiles, submissions, results). Exclude child-related fields for now.
+ - Implement RLS policies; route writes via backend with service role.
 
 Phase 3 — Data Foundations & Scoring
 - Define sports taxonomy and attributes.
 - Continue backend generation of synthetic/test data for “optimal body by sport”; use to seed examples.
 - Implement simple scoring combining measurements + preferences; return ranked list with reasons.
+ - Import optimal_bodies dataset from `../sporty-backend/data/optimal_bodies/generated_gpt-5-mini.jsonl` into Supabase.
 
 Phase 4 — Child + Parents (Prototype, later)
 - Lightweight projection model: height/weight curves + parental influence (transparent assumptions).
 - Dedicated intake view with parent/guardian consent and appropriate safeguards.
+ - Add child tables and guardianships; expand RLS.
 
 Phase 5 — Payment & Hardening (Prep)
 - Stripe checkout stubs: pay-per-analysis; feature flags to gate pages.
@@ -33,3 +36,4 @@ Phase 5 — Payment & Hardening (Prep)
 Always On
 - Track decisions in `docs/DECISIONS.md`.
 - Keep `docs/state.yml` updated with current endpoints/secrets names (no secrets).
+ - Keep `docs/supabase/SCHEMA.md` authoritative for schema/policy changes.

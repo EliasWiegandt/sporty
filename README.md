@@ -53,6 +53,9 @@ wrangler secret put BACKEND_API_KEY
 
 Ensure the backend uses the same API key value (see backend README).
 
+Supabase (for upcoming auth/storage):
+- `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` (new naming) are used by the browser SDK (public). For local dev, place them in `.dev.vars`. See `docs/supabase/SCHEMA.md`.
+
 ## Local Development
 
 1) Start the backend locally (example):
@@ -110,6 +113,24 @@ wrangler secret put BACKEND_API_KEY --env production
 ```
 
 For consistency and privacy-by-default, configure `BACKEND_URL` as a secret per environment instead of committing it in `wrangler.toml`.
+
+## Family & Guardians (Planned)
+
+- Multi-guardian model with parents-only creation and approval:
+  - Create Child: FE calls Supabase RPC `api.create_child(name, birthdate, sex)`; caller becomes an `active` guardian.
+  - Invite Guardian: FE calls `api.invite_guardian(child_id, email?)` → gets a plaintext token; FE builds `/accept-guardian?token=...` link.
+  - Accept Invite: invitee logs in and calls `api.accept_guardian_invite(token)`; state becomes `accepted` (no access yet).
+  - Approve Invite: an existing active guardian calls `api.approve_guardian_invite(invite_id)`; invited user becomes `active`.
+  - Revoke: optional `api.revoke_guardian(child_id, guardian_user_id)`.
+- RLS ensures only `active` guardians can access a child’s data; the client never performs raw table writes — only RPCs.
+
+Supabase usage in FE:
+- Browser uses `SUPABASE_URL` + `SUPABASE_PUBLISHABLE_KEY` (public). Keep session via `persistSession: true`.
+- Do not use service keys in the browser.
+
+Supabase Auth & CORS:
+- Enable Email (magic link) and optionally Google/Apple in Supabase Auth.
+- Add dev and prod app origins to the Auth redirect allowlist (e.g., `http://127.0.0.1:8787`, staging, production domain).
 
 ## API Contract
 

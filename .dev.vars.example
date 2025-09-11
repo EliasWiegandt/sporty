@@ -3,3 +3,9 @@
 
 BACKEND_URL="http://127.0.0.1:8000"
 BACKEND_API_KEY="dev-key-123"
+
+# Supabase (frontend client)
+# New naming: publishable (client) key
+# Safe to expose to the client; still avoid committing real values in code.
+SUPABASE_URL="https://YOUR-PROJECT.supabase.co"
+SUPABASE_PUBLISHABLE_KEY="sb_publishable_..."
